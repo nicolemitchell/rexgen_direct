@@ -93,6 +93,9 @@ class DirectCoreFinder():
         src_batch, edit_batch = [], []
         m = Chem.MolFromSmiles(reactants_smi)
 
+        bonds = [b for b in m.GetBonds()]
+        for b in bonds:
+            print(b.GetBeginAtomIdx()+1, b.GetEndAtomIdx()+1)
         if any(not a.HasProp('molAtomMapNumber') for a in m.GetAtoms()):
             mapnum = 1
             for a in m.GetAtoms():
@@ -124,7 +127,7 @@ class DirectCoreFinder():
         # NOTE: we don't filter out molecules known to be reagents, but during training, 
         # molecules known to be reagents/solvents are not allowed to be involved with bond
         # changes.
-
+        
         for j in range(NK3):
             k = cur_topk[j]
             bindex = k % nbos
